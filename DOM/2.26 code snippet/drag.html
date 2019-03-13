@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>draggable</title>
+  <style>
+    .draggable {
+      border: 1px solid;
+      background-color: violet;
+      position: absolute;
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <span style="top:0;left:0;">aaa</span>
+  <div class="draggable" style="background:violet;top:0;left:0;"></div>
+  <div class="draggable" style="background:red;top:0;left:0;"></div>
+  <div class="draggable" style="background:yellow;top:0;left:0;"></div>
+  <div class="draggable" style="background:aqua;top:0;left:0;"></div>
+
+  <script>
+    var mousePrevX
+    var mousePrevY
+    var elX
+    var elY
+    var el
+    var maxZ = 1
+
+    function move(e) {
+      var dx = e.clientX - mousePrevX
+      var dy = e.clientY - mousePrevY
+      // mousePrevX = e.clientX
+      // mousePrevY = e.clientY
+      var top = parseInt(elY) + dy
+      var left = parseInt(elX) + dx
+      if (top < 50) {
+        top = 0
+      }
+      if (top > innerHeight - 102 - 50) {
+        top = innerHeight - 102
+      }
+      if (left < 50) {
+        left = 0
+      }
+      if (left > innerWidth - 102 - 50) {
+        left = innerWidth - 102
+      }
+      el.style.top = top + 'px'
+      el.style.left = left + 'px'
+    }
+
+    document.addEventListener('mousedown', function(e) {
+      if (e.target.matches('.draggable')) {
+        el = e.target
+        el.style.zIndex = maxZ++
+        mousePrevX = e.clientX
+        mousePrevY = e.clientY
+        elX = parseInt(el.style.left)
+        elY = parseInt(el.style.top)
+        window.addEventListener('mousemove', move)
+      }
+    })
+
+    window.addEventListener('mouseup', function(e) {
+      window.removeEventListener('mousemove', move)
+    })
+  </script>
+</body>
+</html>

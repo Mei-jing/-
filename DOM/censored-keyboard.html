@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text">
+  <script>
+    var input = document.querySelector('input')
+
+    input.addEventListener('keypress', e => {
+      console.log(e)
+      if (['Q', 'W', 'X'].includes(e.key)) {
+        e.preventDefault()
+        var start = input.selectionStart
+        input.value = input.value.slice(0, input.selectionStart) + '*' + input.value.slice(input.selectionEnd)
+
+        input.selectionStart = input.selectionEnd = start + 1
+      }
+    })
+
+    input.addEventListener('paste', e => {
+      e.preventDefault()
+      var pastedText = e.clipboardData.getData('Text')
+      pastedText = pastedText.replace(/[WQX]/g, '*')
+      var start = input.selectionStart
+      input.value = input.value.slice(0, input.selectionStart) + pastedText + input.value.slice(input.selectionEnd)
+
+      input.selectionStart = input.selectionEnd = start + pastedText.length
+    })
+
+    var descriptor = Object.getOwnPropertyDescriptor(input.__proto__, 'value')
+
+    // input.value = xxx
+
+    // prevSetter.call(input, xxx)
+
+    Object.defineProperty(input, 'value', {
+      set: function(val) {
+        val = val.replace(/[WQX]/g, '*')
+        // this.value = val
+        descriptor.set.call(this, val)
+      },
+      get: function() {
+        return descriptor.get.call(this)
+      }
+    })
+
+
+  </script>
+</body>
+</html>

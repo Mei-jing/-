@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <button>i can tripple click</button>
+  <script>
+    var btn = document.querySelector('button')
+
+    var lastLastLastClickTime = 0
+    var lastLastClickTime = 0
+    var lastClickTime = -5000
+    btn.addEventListener('click', e => {
+      var now = Date.now()
+      console.log(lastLastLastClickTime, lastLastClickTime, lastClickTime, now)
+      console.log('click')
+      if (now - lastLastClickTime < 500 && lastLastClickTime - lastLastLastClickTime > 5000) {
+        console.log('tplclick')
+        // lastLastLastClickTime = lastLastClickTime = 0
+        // lastClickTime = -5000
+        // return
+      }
+      lastLastLastClickTime = lastLastClickTime
+      lastLastClickTime = lastClickTime
+      lastClickTime = now
+    })
+
+
+
+    // var lastDblClickTime
+    // btn.addEventListener('click', e => {
+    //   console.log('click')
+    //   var now = Date.now()
+    //   if (now - lastDblClickTime < 300) {
+    //     console.log('tripple click')
+    //     lastDblClickTime = 0
+    //   }
+    // })
+    // btn.addEventListener('dblclick', e => {
+    //   lastDblClickTime = Date.now()
+    //   console.log('dblclick')
+    // })
+  </script>
+</body>
+</html>

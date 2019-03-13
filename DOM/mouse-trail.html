@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    .fire {
+      width: 20px;
+      height: 20px;
+      margin: -10px;
+      background-color: red;
+      position: fixed;
+    }
+    .moon {
+      width: 5px;
+      height: 5px;
+      margin: -2.5px;
+      background-color: red;
+      position: fixed;
+    }
+  </style>
+</head>
+<body>
+  <span class="fire"></span>
+  <span class="fire"></span>
+  <span class="fire"></span>
+  <span class="moon"></span>
+
+  <script>
+    var centerX = 200
+    var centerY = 200
+    var radius = 100
+    var fires = document.querySelectorAll('.fire')
+    var moon = document.querySelector('.moon')
+
+    var speed = 0.001
+
+    var diffAngle = 2 * Math.PI / 3
+
+    requestAnimationFrame(function animate(time) {
+
+
+      var x0 = Math.sin(time * speed) * radius + centerX
+      var y0 = Math.cos(time * speed) * radius + centerY
+      fires[0].style.left = x0 + 'px'
+      fires[0].style.top = y0 + 'px'
+
+      var mx = Math.sin(time * speed * 5) * radius / 3 + x0
+      var my = Math.cos(time * speed * 5) * radius / 3 + y0
+      moon.style.left = mx + 'px'
+      moon.style.top = my + 'px'
+
+      var x1 = Math.sin(time * speed + diffAngle) * radius + centerX
+      var y1 = Math.cos(time * speed + diffAngle) * radius + centerY
+      fires[1].style.left = x1 + 'px'
+      fires[1].style.top = y1 + 'px'
+
+      var x2 = Math.sin(time * speed + diffAngle * 2) * radius + centerX
+      var y2 = Math.cos(time * speed + diffAngle * 2) * radius + centerY
+      fires[2].style.left = x2 + 'px'
+      fires[2].style.top = y2 + 'px'
+
+      requestAnimationFrame(animate)
+    })
+
+    window.addEventListener('mousemove', e => {
+      centerX = e.clientX
+      centerY = e.clientY
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    button.active {
+      background-color: red;
+    }
+    div.children-wrapper > div {
+      display: none;
+    }
+    div.children-wrapper > div.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="tabs">
+    <div data-tabname="Home">this is home</div>
+    <div data-tabname="List">this is list</div>
+    <div data-tabname="About">about me</div>
+  </div>
+
+  <!-- <div>
+    <ul>
+      <li><button>Home</button></li>
+      <li><button>List</button></li>
+      <li><button>About</button></li>
+    </ul>
+    <div>
+      <div data-tabname="Home">this is home</div>
+      <div data-tabname="List">this is list</div>
+      <div data-tabname="About">about me</div>
+    </div>
+  </div> -->
+
+  <script>
+    function asTabs(node) {
+      var children = Array.from(node.children)
+      var ul = document.createElement('ul')
+      var childrenWrapper = document.createElement('div')
+      childrenWrapper.className = 'children-wrapper'
+
+      children.forEach((child, i) => {
+        // child.style.display = 'none'
+        childrenWrapper.appendChild(child)
+        var li = document.createElement('li')
+        var btn = document.createElement('button')
+
+        // btn.addEventListener('click', e => {
+        //   children.forEach(it => it.style.display = 'none')
+        //   children[i].style.display = 'block'
+        // })
+
+
+        btn.innerText = child.dataset.tabname
+        li.appendChild(btn)
+        ul.appendChild(li)
+      })
+
+      ul.addEventListener('click', e => {
+        if (e.target.matches('button')) {
+          ul.querySelectorAll('button').forEach(it => it.classList.remove('active'))
+          e.target.classList.add('active')
+          var i = Array.from(ul.children).indexOf(e.target.parentNode)
+          children.forEach(it => it.classList.remove('active'))
+          children[i].classList.add('active')
+        }
+      })
+
+      children[0].classList.add('active')
+      ul.children[0].firstChild.classList.add('active')
+
+      node.appendChild(ul)
+      node.appendChild(childrenWrapper)
+    }
+
+  </script>
+</body>
+</html>

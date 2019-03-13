@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    .progressbar-outer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    .progressbar-inner {
+      height: 5px;
+      width: 0%;
+      background-color: blue;
+      transition: width 1s;
+    }
+  </style>
+</head>
+<body>
+  
+</body>
+<script>
+  class ProgressBar {
+    constructor() {
+      this.curr = 0
+      this.outer = document.createElement('div')
+      this.inner = document.createElement('div')
+      this.outer.appendChild(this.inner)
+      this.outer.className = 'progressbar-outer'
+      this.inner.className = 'progressbar-inner'
+    }
+
+    start() {
+      this.set(3)
+      document.body.appendChild(this.outer)
+    }
+
+    end() {
+      this.set(100)
+      setTimeout(() => {
+        document.body.removeChild(this.outer) 
+      }, 1000)
+    }
+
+    increase(val) {
+      this.set(this.curr + val)
+    }
+
+    set(val) {
+      this.curr = val
+      this.inner.style.width = this.curr + '%'
+    }
+  }
+</script>
+</html>
