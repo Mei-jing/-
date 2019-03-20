@@ -1,0 +1,44 @@
+<script>
+  function myJsonp(url, callback, errCallback, timeoutCallback) {
+    //避免多个 jsonp 请求产生冲突
+    var callbackName = 'JSONP_CALLBACK_' + Date.now() + '_' + Math.random().toString().slice(2)
+    window[callbackName] = callback //创建一个全局变量的指向
+    url = url + '&callback=' + callbackName
+
+    var runned = false
+
+    var script = document.createElement('script')
+    script.src = url
+
+    script.onerror = function (e) {
+      if (!runned) {
+        errCallback(e)
+        runned = true
+      }
+    }
+
+    script.onload = function () {
+      if (!runned) {
+        document.body.removeChild(script)
+        delete window[callbackName]
+        runned = true
+      }
+
+    }
+
+    setTimeout(() => {
+      if (!runned) {
+        timeoutCallback()
+        runned = true
+      }
+    }, 10000)
+
+    document.head.appendChild(script)
+  }
+
+  myJsonp('https://api.ipify.org/?format=jsonp', function (data) {
+    var h1 = document.createElement('h1')
+    h1.innerHTML = "您的 ip 地址为 " + data.ip
+    document.body.appendChild(h1)
+  })
+</script>
